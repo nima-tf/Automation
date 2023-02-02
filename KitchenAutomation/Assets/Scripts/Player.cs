@@ -1,27 +1,81 @@
+using System;
 using UnityEngine;
 
-public class Player : MonoBehaviour
-{
+public class Player : MonoBehaviour {
+
+    public static Player Instance { get; private set; }
+
+    public event EventHandler<OnSelectCounterChangedEventArgs> OnSelectCounterChanged;
+    public class OnSelectCounterChangedEventArgs : EventArgs {
+        public ClearCounter selectedCounter;
+    }
+
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField]  private float rotationSpeed = 10f;
 
+    [SerializeField] private float interactDistance = 2f;
+
     [SerializeField] private GameInput gameInput;
 
+    [SerializeField] private LayerMask countersLayerMask;
     private bool isWalking;
+    private Vector3 lastInteractMoveDir;
+
+    private ClearCounter selectedCounter;
+
+    private void Awake()
+    {
+        if (Instance != null) {
+            Debug.LogError("There is more than one Player instance");
+        }
+        Instance = this;
+    }
+
+    private void Start()
+    {
+        gameInput.OnInteractAction += GameInput_OnInteractAction;
+    }
+
+    private void GameInput_OnInteractAction(object sender, System.EventArgs e) {
+        if (selectedCounter != null) {
+            selectedCounter.Interact();
+        }
+    }
 
     private void Update() {
-        HandleMovement();
+        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+
+        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
+
+        HandleMovement(inputVector, moveDir);
+        HandleInteractions(inputVector, moveDir);
     }
 
     public bool IsWalking() {
         return isWalking;
     }
 
-    private void HandleMovement() {
-                Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+    private void HandleInteractions(Vector2 inputVector, Vector3 moveDir) {
 
-        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
+        if (moveDir != Vector3.zero) {
+            lastInteractMoveDir = moveDir;
+        }
 
+        if (Physics.Raycast(transform.position, lastInteractMoveDir, out RaycastHit raycastHit, interactDistance, countersLayerMask)) {
+            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter)) {
+                // Has ClearCounter
+                if (clearCounter != selectedCounter) {
+                    SetSelectedCounter(clearCounter);
+                } else {
+                    SetSelectedCounter(null);
+                }
+            } else {
+                SetSelectedCounter(null);
+            }
+        }
+    }
+
+    private void HandleMovement(Vector2 inputVector, Vector3 moveDir) {
         float moveDistance = moveSpeed * Time.deltaTime;
         float playerHeight = 2f;
         float playerRadius = .7f;
@@ -60,5 +114,12 @@ public class Player : MonoBehaviour
         isWalking = moveDir != Vector3.zero;
         
         transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotationSpeed);
+    }
+
+    private void SetSelectedCounter(ClearCounter selectedCounter) {
+        this.selectedCounter = selectedCounter;
+            OnSelectCounterChanged?.Invoke(this, new OnSelectCounterChangedEventArgs {
+                selectedCounter = selectedCounter
+            });        
     }
 }
