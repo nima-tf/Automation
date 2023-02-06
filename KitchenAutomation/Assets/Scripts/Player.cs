@@ -6,7 +6,7 @@ public class Player : MonoBehaviour, IKitchenItemParent {
     public event EventHandler<OnSelectCounterChangedEventArgs> OnSelectCounterChanged;
 
     public class OnSelectCounterChangedEventArgs : EventArgs {
-        public ClearCounter selectedCounter;
+        public BaseCounter selectedCounter;
     }
 
     [SerializeField] private float moveSpeed = 7f;
@@ -18,7 +18,7 @@ public class Player : MonoBehaviour, IKitchenItemParent {
     private KitchenItem kitchenItem;
     private bool isWalking;
     private Vector3 lastInteractMoveDir;
-    private ClearCounter selectedCounter;
+    private BaseCounter selectedCounter;
 
     private void Awake()
     {
@@ -59,10 +59,10 @@ public class Player : MonoBehaviour, IKitchenItemParent {
         }
 
         if (Physics.Raycast(transform.position, lastInteractMoveDir, out RaycastHit raycastHit, interactDistance, countersLayerMask)) {
-            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter)) {
+            if (raycastHit.transform.TryGetComponent(out BaseCounter baseCounter)) {
                 // Has ClearCounter
-                if (clearCounter != selectedCounter) {
-                    SetSelectedCounter(clearCounter);
+                if (baseCounter != selectedCounter) {
+                    SetSelectedCounter(baseCounter);
                 } else {
                     SetSelectedCounter(null);
                 }
@@ -76,6 +76,7 @@ public class Player : MonoBehaviour, IKitchenItemParent {
         float moveDistance = moveSpeed * Time.deltaTime;
         float playerHeight = 2f;
         float playerRadius = .7f;
+
         bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDir, moveDistance);
 
         if (!canMove) {
@@ -113,7 +114,7 @@ public class Player : MonoBehaviour, IKitchenItemParent {
         transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotationSpeed);
     }
 
-    private void SetSelectedCounter(ClearCounter selectedCounter) {
+    private void SetSelectedCounter(BaseCounter selectedCounter) {
         this.selectedCounter = selectedCounter;
             OnSelectCounterChanged?.Invoke(this, new OnSelectCounterChangedEventArgs {
                 selectedCounter = selectedCounter
