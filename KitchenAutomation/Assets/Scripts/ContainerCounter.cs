@@ -8,11 +8,16 @@ public class ContainerCounter : BaseCounter {
     
     public override void Interact(Player player) {
         if (!player.HasKitchenItem()) {
-            Transform kitchenItemTransform = Instantiate(this.kitchenItemSO.prefab);
-            kitchenItemTransform.GetComponent<KitchenItem>().SetKitchenItemParent(player);
+            KitchenItem.SpawnKitchenItem(kitchenItemSO, player);
+
             OnPlayerGrabedObject?.Invoke(this, EventArgs.Empty);
         } else {
             Debug.Log("Player already has something in hand!");
         }
+    }
+
+    public override void InteractAlternate(Player player)
+    {
+        Debug.Log("Cannot cut here!");
     }
 }

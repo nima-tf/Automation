@@ -7,6 +7,8 @@ public abstract class BaseCounter : MonoBehaviour, IKitchenItemParent {
     
     public abstract void Interact(Player player);
 
+    public abstract void InteractAlternate(Player player);
+
     public Transform GetKitchenItemFollowTransform() {
         return counterTopPoint;
     }
