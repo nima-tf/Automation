@@ -1,4 +1,4 @@
-# Kitchen Automation - Unity Game
+# Kitchen Automation - Unity
 
 ## Technical Debt:
 - Counter select bug
