@@ -15,9 +15,4 @@ public class ContainerCounter : BaseCounter {
             Debug.Log("Player already has something in hand!");
         }
     }
-
-    public override void InteractAlternate(Player player)
-    {
-        Debug.Log("Cannot cut here!");
-    }
 }
