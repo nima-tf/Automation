@@ -15,7 +15,6 @@ public class CuttingCounter : BaseCounter {
     private int cuttingProgress;
 
     public override void Interact(Player player) {
-        Debug.Log(player.HasKitchenItem());
         if (!HasKitchenItem()) {
             // There is no KitchenItem here
             if (player.HasKitchenItem()) {
@@ -34,7 +33,7 @@ public class CuttingCounter : BaseCounter {
                 // Player has nothing
             }
         } else {
-            // There is no KitchenItem here
+            // There is a KitchenItem here
             if (player.HasKitchenItem()) {
                 // Player is carrying something
             } else {
@@ -82,7 +81,7 @@ public class CuttingCounter : BaseCounter {
 
     private CuttingRecipeSO GetCuttingRecipeSOWithInput(KitchenItemSO inputKitchenItemSO) {
         foreach (CuttingRecipeSO cuttingRecipeSO in cuttingRecipeSOArray) {
-            if (cuttingRecipeSO == inputKitchenItemSO) {
+            if (cuttingRecipeSO.input == inputKitchenItemSO) {
                 return cuttingRecipeSO;
             }
         }
