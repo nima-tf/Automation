@@ -9,9 +9,9 @@ public class PlatesCounter : BaseCounter
     [SerializeField] private KitchenItemSO plateKitchenItemSO;
 
     private float spawnPlateTimer;
-    private float spawnPlateTimerMax = 5f;
+    private float spawnPlateTimerMax = 4f;
     private int platesSpawnedAmount;
-    private int platesSpawnedAmountMax = 5;
+    private int platesSpawnedAmountMax = 4;
 
     private void Update() {
         spawnPlateTimer += Time.deltaTime;
