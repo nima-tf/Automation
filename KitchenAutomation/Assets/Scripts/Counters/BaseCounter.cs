@@ -3,6 +3,11 @@ using UnityEngine;
 
 public abstract class BaseCounter : MonoBehaviour, IKitchenItemParent {
     public static event EventHandler OnAnyItemPlaced;
+    public static void ResetStaticDate() {
+        // manually removes static fields
+        // static fields won't get destroyed automatically on object destruction
+        OnAnyItemPlaced = null;
+    }
 
     [SerializeField] private Transform counterTopPoint;
 

@@ -2,9 +2,11 @@ using System;
 using UnityEngine;
 
 public class CuttingCounter : BaseCounter, IHasProgress {
-
-    public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
     public static event EventHandler OnAnyCut;
+    new public static void ResetStaticDate() {
+        OnAnyCut = null;
+    }
+    public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnProgressChanged;
     public event EventHandler OnCut;
 
     [SerializeField] private CuttingRecipeSO[] cuttingRecipeSOArray;
@@ -54,6 +56,7 @@ public class CuttingCounter : BaseCounter, IHasProgress {
             cuttingProgress++;
 
             OnCut?.Invoke(this, EventArgs.Empty);
+            Debug.Log(OnAnyCut.GetInvocationList().Length);
             OnAnyCut?.Invoke(this, EventArgs.Empty);
             CuttingRecipeSO cuttingRecipeSO = GetCuttingRecipeSOWithInput(GetKitchenItem().GetKitchenItemSO());
             

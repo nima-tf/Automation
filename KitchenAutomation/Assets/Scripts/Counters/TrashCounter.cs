@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class TrashCounter : BaseCounter {
     public static event EventHandler OnAnyItemTrashed;
+    new public static void ResetStaticDate() {
+        OnAnyItemTrashed = null;
+    }
 
     public override void Interact(Player player)
     {
