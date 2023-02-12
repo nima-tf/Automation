@@ -50,6 +50,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd36057cfdbe89c4b855263cdeda5d3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  plateKitchenItem: {fileID: 0}
+  kitchenItemSOGameObjectList: []
 --- !u!1001 &408889405707390302
 PrefabInstance:
   m_ObjectHideFlags: 0
