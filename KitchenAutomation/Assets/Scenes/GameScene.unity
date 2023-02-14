@@ -4787,7 +4787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29a401001ac9786409e3520c2047a03e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countdownToStartTimer: 6
+  countdownToStartTimer: 3
   gamePlayingTimerMax: 60
 --- !u!4 &734088574
 Transform:
@@ -14852,6 +14852,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1309443523}
     m_Modifications:
+    - target: {fileID: 3807206354740092055, guid: 92d761d5991d0b140882312011ecfef6,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 330585545}
     - target: {fileID: 4324582147884491562, guid: 92d761d5991d0b140882312011ecfef6,
         type: 3}
       propertyPath: m_Name
